@@ -3,25 +3,25 @@
     <div>
         <div class="card border-0 rounded shadow">
             <div class="card-body">
-                <h4>TAMBAH POST</h4>
+                <h4>EDIT PIC</h4>
                 <hr>
-                <form @submit.prevent="storePost">
+                <form @submit.prevent="updatePic">
                     <div class="mb-3">
-                        <label class="form-label">TITLE POST</label>
-                        <input type="text" class="form-control" v-model="post.title" placeholder="Masukkan Title Post">
-                        <div v-if="errors.title" class="mt-2 alert alert-danger">
-                            {{ errors.title }}
+                        <label class="form-label">NAMA</label>
+                        <input type="text" class="form-control" v-model="pic.nama" placeholder="Masukkan Nama">
+                        <div v-if="errors.nama" class="mt-2 alert alert-danger">
+                            {{ errors.nama }}
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">CONTENT</label>
-                        <textarea class="form-control" rows="5" v-model="post.content" placeholder="Masukkan Content Post"></textarea>
+                        <label class="form-label">Email</label>
+                        <input type="text" class="form-control" v-model="pic.email" placeholder="Masukkan email">
                         <div v-if="errors.content" class="mt-2 alert alert-danger">
-                            {{ errors.content }}
+                            {{ errors.email }}
                         </div>
                     </div>
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-primary btn-md shadow-sm me-2">SIMPAN</button>
+                        <button type="submit" class="btn btn-primary btn-md shadow-sm me-2">UPDATE</button>
                         <button type="reset" class="btn btn-warning btn-md shadow-sm">RESET</button>
                     </div>
                 </form>
@@ -45,36 +45,37 @@
 
         //props
         props: {
+            pic: Object,
             errors: Object
         },
 
         //define Composition Api
-        setup() {
+        setup(props) {
 
             //state posts
-            const post = reactive({
-                title: '',
-                content: ''
+            const pic = reactive({
+                nama: props.pic.nama,
+                email: props.pic.email
             })
 
-            //function storePost
-            function storePost() {
+            //function updatePost
+            function updatePic() {
                 
                 //define variable 
-                let title   = post.title
-                let content = post.content
+                let nama   = pic.nama
+                let email = pic.email
 
                 //send data
-                Inertia.post('/posts/', {
-                    title: title,
-                    content: content
+                Inertia.put(`/pics/${props.pic.id}`, {
+                    nama: nama,
+                    email: email
                 })
              
             }
 
             return {
-                post,
-                storePost
+                pic,
+                updatePic
             }
 
         }

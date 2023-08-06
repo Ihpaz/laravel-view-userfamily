@@ -6,25 +6,25 @@
         </div>
         <!-- flash message -->
         <div class="mb-3">
-            <inertia-link href="/posts/create" class="btn btn-md btn-primary">TAMBAH DATA</inertia-link>
+            <inertia-link href="/pics/create" class="btn btn-md btn-primary">TAMBAH DATA</inertia-link>
         </div>
         <div class="card border-0 rounded shadow-sm">
             <div class="card-body">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">TITLE</th>
-                            <th scope="col">CONTENT</th>
+                            <th scope="col">NAMA</th>
+                            <th scope="col">EMAIL</th>
                             <th scope="col">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="post in posts" :key="post.id">
-                            <td>{{ post.title }}</td>
-                            <td>{{ post.content }}</td>
+                        <tr v-for="pic in pics" :key="pic.id">
+                            <td>{{ pic.nama }}</td>
+                            <td>{{ pic.email }}</td>
                             <td class="text-center">
-                                <inertia-link :href="`/posts/${post.id}/edit`" class="btn btn-sm btn-primary me-2">EDIT</inertia-link>
-                                <button @click.prevent="deletePost(`${post.id}`)" class="btn btn-sm btn-danger">DELETE</button>
+                                <inertia-link :href="`/pics/${pic.id}/edit`" class="btn btn-sm btn-primary me-2">EDIT</inertia-link>
+                                <button @click.prevent="deletePic(`${pic.id}`)" class="btn btn-sm btn-danger">DELETE</button>
                             </td>
                         </tr>
                     </tbody>
@@ -47,21 +47,21 @@
 
         //props
         props: {
-            posts: Array // <- nama props yang dibuat di controller saat parsing data
+            pics: Array // <- nama props yang dibuat di controller saat parsing data
         },
 
         //define Composition Api
         setup() {
 
             //method deletePost
-            function deletePost(id) {
+            function deletePic(id) {
                 
-                Inertia.delete(`/posts/${id}`)
+                Inertia.delete(`/pics/${id}`)
 
             }
 
             return {
-                deletePost
+                deletePic
             }
 
         }

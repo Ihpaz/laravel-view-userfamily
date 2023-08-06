@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class SubProject extends Model
 {
     use HasFactory;
-    
-    /**
-     * fillable
-     *
-     * @var array
-     */
+
     protected $fillable = [
-        'title', 'content'
+        'nama','project_id'
     ];
+    public function detailProject()
+    {
+        return $this->hasMany(detailProject::class);
+    }
 }
