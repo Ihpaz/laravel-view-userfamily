@@ -81,11 +81,11 @@ class ProjectController extends Controller
 
             foreach($subproject['details'] as $detailproject){
                 $detailProject = detailProject::create([
-                    'nama'     => $detailproject['nama'],
-                    'StartDate' => $detailproject['StartDate'],
-                    'EndDate'   => $detailproject['EndDate'],
+                    'nama'     => $detailproject['nama'] ? $detailproject['nama'] :'',
+                    'StartDate' => $detailproject['StartDate'] ? $detailproject['StartDate'] : date('Y-m-d H:i:s',strtotime('8/6/2023')),
+                    'EndDate'   => $detailproject['EndDate'] ? $detailproject['EndDate'] : date('Y-m-d H:i:s',strtotime('8/6/2023')) ,
                     'status'   => $detailproject['Status'],
-                    'pic_id'   => $detailproject['pic'],
+                    'pic_id'   => $detailproject['pic'] ? $detailproject['pic'] : 0,
                     'subproject_id'   => $SubProject->id
                 ]);
             }
@@ -184,12 +184,26 @@ class ProjectController extends Controller
      
         foreach($request->projects as $subproject){
            
-            $affected = DB::table('sub_projects')
-            ->where('id', $subproject['id'])
-            ->update([
-                'nama'     => $subproject['nama'],
-                'project_id'   => $Project->id
-            ]);
+            $subprojectid='';
+            if(!isset($subproject['id'])){
+                $SubProject = SubProject::create([
+                    'nama'     => $subproject['nama'],
+                    'project_id'   => $Project->id
+                ]);
+
+                $subprojectid=$SubProject->id;
+            }else{
+                $affected = DB::table('sub_projects')
+                ->where('id', $subproject['id'])
+                ->update([
+                    'nama'     => $subproject['nama'],
+                    'project_id'   => $Project->id
+                ]);
+                $subprojectid=$subproject['id'];
+            }
+
+
+            
 
             // $SubProject = SubProject::create([
             //     'nama'     => $subproject['nama'],
@@ -198,25 +212,30 @@ class ProjectController extends Controller
 
             foreach($subproject['details'] as $detailproject){
 
-                $affected = DB::table('detail_projects')
-                ->where('id', $detailproject['id'])
-                ->update([
-                    'nama'     => $detailproject['nama'],
-                    'StartDate' => $detailproject['StartDate'],
-                    'EndDate'   => $detailproject['EndDate'],
-                    'status'   => $detailproject['Status'],
-                    'pic_id'   => $detailproject['pic'],
-                    'subproject_id'   => $subproject['id']
-                ]);
+                if(isset($detailproject['id'])){
+                    $affected = DB::table('detail_projects')
+                    ->where('id', $detailproject['id'])
+                    ->update([
+                        'nama'     =>  $detailproject['nama'] ? $detailproject['nama'] :'',
+                        'StartDate' => $detailproject['StartDate'] ? $detailproject['StartDate'] : date('Y-m-d H:i:s',strtotime('8/6/2023')),
+                        'EndDate'   =>$detailproject['EndDate'] ? $detailproject['EndDate'] : date('Y-m-d H:i:s',strtotime('8/6/2023')) ,
+                        'status'   => $detailproject['Status'],
+                        'pic_id'   => $detailproject['pic'] ? $detailproject['pic'] : 0,
+                        'subproject_id'   =>  $subprojectid
+                    ]);
+                }else{
+                    $detailProject = detailProject::create([
+                        'nama'     =>  $detailproject['nama'] ? $detailproject['nama'] :'',
+                        'StartDate' => $detailproject['StartDate'] ? $detailproject['StartDate'] : date('Y-m-d H:i:s',strtotime('8/6/2023')),
+                        'EndDate'   => $detailproject['EndDate'] ? $detailproject['EndDate'] : date('Y-m-d H:i:s',strtotime('8/6/2023')) ,
+                        'status'   => $detailproject['Status'],
+                        'pic_id'   => $detailproject['pic'] ? $detailproject['pic'] : 0,
+                        'subproject_id'   =>   $subprojectid
+                    ]);
+                }
+               
 
-                // $detailProject = detailProject::create([
-                //     'nama'     => $detailproject['nama'],
-                //     'StartDate' => $detailproject['StartDate'],
-                //     'EndDate'   => $detailproject['EndDate'],
-                //     'status'   => $detailproject['Status'],
-                //     'pic_id'   => $detailproject['pic'],
-                //     'subproject_id'   => $SubProject->id
-                // ]);
+              
             }
         }
 

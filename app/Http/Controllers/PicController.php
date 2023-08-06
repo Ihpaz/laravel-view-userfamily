@@ -48,7 +48,7 @@ class PicController extends Controller
             'email' => 'required',
         ]);
 
-        //create post
+        //create 
         $Pic = Pic::create([
             'nama'     => $request->nama,
             'email'   => $request->email
@@ -62,7 +62,7 @@ class PicController extends Controller
     /**
      * edit
      *
-     * @param  mixed $post
+     * @param  mixed 
      * @return void
      */
     public function edit(Pic $Pic)
@@ -76,7 +76,7 @@ class PicController extends Controller
      * update
      *
      * @param  mixed $request
-     * @param  mixed $post
+     * @param  mixed 
      * @return void
      */
     public function update(Request $request, Pic $pic)
@@ -87,7 +87,7 @@ class PicController extends Controller
             'email' => 'required',
         ]);
 
-        //update post
+        //update 
         $pic->update([
             'nama'     => $request->nama,
             'email'   => $request->email
@@ -106,7 +106,7 @@ class PicController extends Controller
      */
     public function destroy($id)
     {
-        //find post by ID
+        //find  by ID
         $pic = Pic::findOrfail($id);
 
         //delete post
