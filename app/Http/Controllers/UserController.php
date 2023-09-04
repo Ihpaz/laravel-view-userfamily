@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
-use App\Models\subProject;
-use App\Models\detailProject;
-use App\Models\Pic;
+
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -23,8 +20,7 @@ class UserController extends Controller
     public function index()
     {
         
-        $Users = json_decode($this->getExternalApi("http://localhost:8080/customer"));
-        
+        $Users = json_decode($this->runExternalApi("http://localhost:8080/customer"));
         foreach($Users as $dt){
             $dt->Cst_dob_date=Date('Y-m-d',strtotime($dt->Cst_dob_date));
         }
@@ -42,7 +38,7 @@ class UserController extends Controller
     public function create()
     {
 
-        $nationality = json_decode($this->getExternalApi("http://localhost:8080/nationality"));
+        $nationality = json_decode($this->runExternalApi("http://localhost:8080/nationality"));
         $Users =(object)[
             'nationalities' => $nationality,
             'Cst_name'     => '',
@@ -85,14 +81,7 @@ class UserController extends Controller
                 'FamilyList' => $request->FamilyList
             ]
         ];
-
-        // dd($param);
-       
-        $user =$this->getExternalApi("http://localhost:8080/customer",$param,'POST');
-      
-       
-       
-
+        $user =$this->runExternalApi("http://localhost:8080/customer",$param,'POST');
         if($user) {
             return Redirect::route('users.index')->with('message', 'Data Berhasil Disimpan!');
         }
@@ -107,14 +96,12 @@ class UserController extends Controller
     public function edit($id)
     {
       
-        $nationality = json_decode($this->getExternalApi("http://localhost:8080/nationality"));
-        $user = json_decode($this->getExternalApi("http://localhost:8080/customer/".$id));
-
+        $nationality = json_decode($this->runExternalApi("http://localhost:8080/nationality"));
+        $user = json_decode($this->runExternalApi("http://localhost:8080/customer/".$id));
         foreach($user->FamilyList as $dt){
             
             $dt->Fl_dob_date=Date('Y-m-d',strtotime($dt->Fl_dob_date));
         }
-
         $Users =(object)[
             'id' => $id,
             'nationalities' => $nationality,
@@ -127,7 +114,6 @@ class UserController extends Controller
 
         ];
 
-        // dd($Users);
         return Inertia::render('User/Edit', [
             'users' => $Users
         ]);
@@ -161,14 +147,8 @@ class UserController extends Controller
                 'FamilyList' => $request->FamilyList
             ]
         ];
-
-        // dd($param);
        
-        $user =$this->getExternalApi("http://localhost:8080/customer/".$id,$param,'PUT');
-      
-       
-       
-
+        $user =$this->runExternalApi("http://localhost:8080/customer/".$id,$param,'PUT');
         if($user) {
             return Redirect::route('users.index')->with('message', 'Data Berhasil Diupdate!');
         }
@@ -189,29 +169,17 @@ class UserController extends Controller
                
             ]
         ];
-
-    
-       
-        $user =$this->getExternalApi("http://localhost:8080/customer/".$id,[],'DELETE');
-
+        $user =$this->runExternalApi("http://localhost:8080/customer/".$id,[],'DELETE');
         if($user) {
             return Redirect::route('users.index')->with('message', 'Data Berhasil Dihapus!');
         }
 
     }
 
-    public function getExternalApi($url,$param = [],$action='GET')
+    public function runExternalApi($url,$param = [],$action='GET')
     {
         $client = new \GuzzleHttp\Client();
-
-        // dd($param);
         $res = $client->request($action, $url,$param);
-
-        // echo $res->getStatusCode();
-        // // "200"
-        // echo $res->getHeader('content-type')[0];
-        // 'application/json; charset=utf8'
         return $res->getBody();
-
     }
 }

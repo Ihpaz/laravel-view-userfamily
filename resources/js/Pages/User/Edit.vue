@@ -9,8 +9,8 @@
                     <div class="mb-3">
                         <label class="form-label">Name</label>
                         <input type="text" class="form-control" v-model="DtUser.Cst_name" placeholder="Masukkan Nama">
-                        <div v-if="errors.nama" class="mt-2 alert alert-danger">
-                            {{ errors.nama }}
+                        <div v-if="errors.Cst_name" class="mt-2 alert alert-danger">
+                            {{ errors.Cst_name }}
                         </div>
                     </div>
                     <div class="mb-3">
@@ -18,29 +18,29 @@
                         <select class="form-control" v-model="DtUser.Nationality_id">
                             <option v-for="nationality in DtUser.nationalities" :value="nationality.ID" >{{ nationality.Nationality_name }}</option>  
                         </select>
-                        <div v-if="errors.nama" class="mt-2 alert alert-danger">
-                            {{ errors.nama }}
+                        <div v-if="errors.Nationality_id" class="mt-2 alert alert-danger">
+                            {{ errors.Nationality_id }}
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Date of Birth</label>
                         <input type="date" class="form-control" v-model="DtUser.Cst_dob_date" >
-                        <div v-if="errors.nama" class="mt-2 alert alert-danger">
-                            {{ errors.nama }}
+                        <div v-if="errors.Cst_dob_date" class="mt-2 alert alert-danger">
+                            {{ errors.Cst_dob_date }}
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
                         <input type="text" class="form-control" v-model="DtUser.Cst_email" placeholder="Masukkan Email">
-                        <div v-if="errors.nama" class="mt-2 alert alert-danger">
-                            {{ errors.nama }}
+                        <div v-if="errors.Cst_email" class="mt-2 alert alert-danger">
+                            {{ errors.Cst_email }}
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Phone Number</label>
                         <input type="text" class="form-control" v-model="DtUser.Cst_phoneNum" placeholder="Masukkan No Telp">
-                        <div v-if="errors.nama" class="mt-2 alert alert-danger">
-                            {{ errors.nama }}
+                        <div v-if="errors.Cst_phoneNum" class="mt-2 alert alert-danger">
+                            {{ errors.Cst_phoneNum }}
                         </div>
                     </div>
                     <div class="mb-3">
@@ -54,15 +54,15 @@
         <div class="card border-0 rounded shadow">
             <div class="card-body">
                 
-                   
-                    <div class="mb-3">
-                        <th scope="col"><button @click.prevent="addFamily()" class="btn btn-sm btn-danger">Tambah Keluarga</button></th>
-                    </div>
-               
-               
-                    <div v-if="errors.FamilyList" class="mt-2 alert alert-danger">
-                            {{ errors.FamilyList }}
-                        </div>
+                <div class="mb-3">
+                    <th scope="col"><button @click.prevent="addFamily()" class="btn btn-sm btn-danger">Tambah Keluarga</button></th>
+                </div>
+            
+            
+                <div v-if="errors.FamilyList" class="mt-2 alert alert-danger">
+                        {{ errors.FamilyList }}
+                </div>
+
                 <table class="table"  v-for="(family,index) in DtUser.FamilyList" :key="family.id">
                     <thead>
                         <tr>
@@ -73,7 +73,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type="text" class="form-control" v-model="DtUser.FamilyList[index].Fl_name" placeholder="Masukkan detail Subproject"></td>
+                            <td><input type="text" class="form-control" v-model="DtUser.FamilyList[index].Fl_name" placeholder="Masukkan nama keluarga"></td>
                             <td><input type="date" class="form-control" v-model="DtUser.FamilyList[index].Fl_dob_date" ></td>
                             <td class="text-center">
                                 <button @click.prevent="deleteFamily(`${index}`)" class="btn btn-sm btn-danger">DELETE</button>
